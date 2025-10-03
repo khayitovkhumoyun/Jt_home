@@ -25,10 +25,6 @@ SECRET_KEY = 'django-insecure-48hm#4lgl@9t_h78*39s09%64bb6uf1&g7b6y8i7$j_xhde#28
 DEBUG = False
 
 ALLOWED_HOSTS = ['*','172.22.0.43']
-# password
-
-# Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,6 +36,10 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework',
 ]
+# password
+
+# Application definition
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -123,9 +123,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'config/static/'),
+]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+
 
 
 
