@@ -70,8 +70,8 @@ TEMPLATES = [
     },
 ]
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "https://example.com",
+    "http://localhost:3003",
+    "https://front.uzswlu.uz/",
 ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = [
