@@ -71,8 +71,10 @@ TEMPLATES = [
 ]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3003",
+    "http://172.22.0.43",
     "https://front.uzswlu.uz/",
 ]
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = [
     "GET",
