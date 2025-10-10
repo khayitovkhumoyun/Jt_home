@@ -45,6 +45,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://172.22.0.43:8001",
     "http://localhost:8001",
     "http://localhost:3003",
+    "httpS://172.22.0.43:3003",
     "https://front.uzswlu.uz",
     "https://swagger.uzswlu.uz",
 ]
@@ -53,6 +54,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://172.22.0.43:8001",
     "http://localhost:8001",
     "http://localhost:3003",
+    "httpS://172.22.0.43:3003",
     "https://front.uzswlu.uz",
     "https://swagger.uzswlu.uz",
 ]
@@ -63,7 +65,9 @@ ALLOWED_HOSTS = [
     "172.22.0.43",
     "localhost",
 ]
-
+SWAGGER_SETTINGS = {
+    'DEFAULT_API_URL': 'http://172.22.0.43:8001',
+}
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
