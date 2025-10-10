@@ -48,6 +48,7 @@ CSRF_TRUSTED_ORIGINS = [
     "httpS://172.22.0.43:3003",
     "https://front.uzswlu.uz",
     "https://swagger.uzswlu.uz",
+    "http://127.0.0.1:8000"
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -57,6 +58,7 @@ CORS_ALLOWED_ORIGINS = [
     "httpS://172.22.0.43:3003",
     "https://front.uzswlu.uz",
     "https://swagger.uzswlu.uz",
+    "http://127.0.0.1:8000"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -64,6 +66,7 @@ CORS_ALLOW_CREDENTIALS = True
 ALLOWED_HOSTS = [
     "172.22.0.43",
     "localhost",
+    "*"
 ]
 SWAGGER_SETTINGS = {
     'DEFAULT_API_URL': 'http://172.22.0.43:8001',
