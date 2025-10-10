@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-48hm#4lgl@9t_h78*39s09%64bb6uf1&g7b6y8i7$j_xhde#28
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*", "172.22.0.43", ]
+# ALLOWED_HOSTS = ["*", "172.22.0.43", ]
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,32 +38,32 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 # password
+# SECURE_PROXY_SSL_HEADER yo‘q yoki kommentda qoldirilgan
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 CSRF_TRUSTED_ORIGINS = [
-    "https://swagger.uzswlu.uz",
-    "https://front.uzswlu.uz:3003",
-    "https://django.uzswlu.uz",
-    "https://front.uzswlu.uz",
-    "https://swagger.uzswlu.uz:3000",
-    "https://172.22.0.43:8001",
-    'http://172.22.0.43:8001/swagger/',
-    "http://localhost:3003",
+    "http://172.22.0.43:8001",
     "http://localhost:8001",
+    "http://localhost:3003",
     "https://front.uzswlu.uz",
-    'http://172.22.0.43:8001/swagger/',
+    "https://swagger.uzswlu.uz",
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://172.22.0.43:8001/swagger/',
-    "https://front.uzswlu.uz",
-    "https://front.uzswlu.uz:3005",
-    "https://swagger.uzswlu.uz",
-    "https://django.uzswlu.uz",
-    "https://swagger.uzswlu.uz:3000",
-    "https://django.uzswlu.uz:3001",
+    "http://172.22.0.43:8001",
+    "http://localhost:8001",
     "http://localhost:3003",
-    "https://front.uzswlu.uz"
+    "https://front.uzswlu.uz",
+    "https://swagger.uzswlu.uz",
 ]
+
 CORS_ALLOW_CREDENTIALS = True
+
+ALLOWED_HOSTS = [
+    "172.22.0.43",
+    "localhost",
+]
+
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
