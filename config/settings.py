@@ -42,13 +42,14 @@ CSRF_TRUSTED_ORIGINS = [
     "https://swagger.uzswlu.uz",
     "https://front.uzswlu.uz:3003",
     "https://django.uzswlu.uz",
-    "https://front.uzswlu.uz"
+    "https://front.uzswlu.uz",
     "https://swagger.uzswlu.uz:3000",
     "https://172.22.0.43:8001",
     'http://172.22.0.43:8001/swagger/',
     "http://localhost:3003",
     "http://localhost:8001",
-    "https://front.uzswlu.uz"
+    "https://front.uzswlu.uz",
+    'http://172.22.0.43:8001/swagger/',
 ]
 
 CORS_ALLOWED_ORIGINS = [
