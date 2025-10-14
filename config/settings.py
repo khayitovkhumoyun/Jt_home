@@ -69,7 +69,7 @@ ALLOWED_HOSTS = [
     "*"
 ]
 SWAGGER_SETTINGS = {
-    'DEFAULT_API_URL': 'http://172.22.0.43:8005',
+    'DEFAULT_API_URL': 'http://172.22.0.43:8001',
     # 'DEFAULT_API_URL': 'http://127.0.0.1:8005',
 }
 
