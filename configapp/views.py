@@ -3,6 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
+from yaml import serialize
+
 from .models import (
     Language, PageModels, Content,
     ContentText, ContentFile, ContentImage, ContentVideo
@@ -10,7 +12,7 @@ from .models import (
 
 from .serializers import (
     LanguageSerializer, PageModelsSerializer, ContentSerializer,
-    ContentTextSerializer, ContentFileSerializer, ContentImageSerializer, ContentVideoSerializer
+    ContentTextSerializer, ContentFileSerializer, ContentImageSerializer, ContentVideoSerializer, PageSerializer
 )
 
 
@@ -36,6 +38,7 @@ class LanguageDetailAPIView(APIView):
         serializer = LanguageSerializer(lang)
         return Response(serializer.data)
 
+    @swagger_auto_schema(request_body=LanguageSerializer)
     def put(self, request, pk):
         lang = get_object_or_404(Language, pk=pk)
         serializer = LanguageSerializer(lang, data=request.data)
@@ -44,6 +47,7 @@ class LanguageDetailAPIView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(request_body=LanguageSerializer)
     def patch(self, request, pk):
         lang = get_object_or_404(Language, pk=pk)
         serializer = LanguageSerializer(lang, data=request.data, partial=True)
@@ -73,6 +77,30 @@ class PageModelsAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+"""
+    Page → Category → Subcategory tuzilmasini JSON formatda qaytaradi.
+    """
+class PageApi(APIView):
+
+    def get(self, request,lan_pk):
+        # Agar URL orqali aniq page so‘ralgan bo‘lsa
+        lans = Language.objects.all()
+        serialize_lan =LanguageSerializer(lans,many=True)
+        try:
+            page = PageModels.objects.filter(lang=lan_pk).first()
+            serializer = PageSerializer(page)
+            content={
+                "lans":serialize_lan.data,
+                "page":serializer.data
+            }
+            return Response(content)
+        except PageModels.DoesNotExist:
+            context={
+                "data":None,
+                "status":False
+            }
+            return Response(data=context)
+
 
 class PageDetailAPIView(APIView):
     def get(self, request, pk):
@@ -80,6 +108,7 @@ class PageDetailAPIView(APIView):
         serializer = PageModelsSerializer(page)
         return Response(serializer.data)
 
+    @swagger_auto_schema(request_body=PageModelsSerializer)
     def put(self, request, pk):
         page = get_object_or_404(PageModels, pk=pk)
         serializer = PageModelsSerializer(page, data=request.data)
@@ -88,6 +117,7 @@ class PageDetailAPIView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(request_body=PageModelsSerializer)
     def patch(self, request, pk):
         page = get_object_or_404(PageModels, pk=pk)
         serializer = PageModelsSerializer(page, data=request.data, partial=True)

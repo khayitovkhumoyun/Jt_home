@@ -12,15 +12,15 @@ class LanguageSerializer(serializers.ModelSerializer):
 
 
 class PageModelsSerializer(serializers.ModelSerializer):
-    lang = LanguageSerializer(read_only=True)
-    lang_id = serializers.PrimaryKeyRelatedField(
-        queryset=Language.objects.all(), source="lang", write_only=True
-    )
 
     class Meta:
         model = PageModels
-        fields = "__all__"
-
+        fields = ['id','icon','title','lang','url','sub','dic']
+        extra_kwargs = {
+            'icon': {'required': False, 'allow_null': True},
+            'sub': {'required': True, 'allow_null': True},
+            'dic': {'required': False, 'allow_null': True},
+        }
 
 class ContentSerializer(serializers.ModelSerializer):
     page = PageModelsSerializer(read_only=True)
@@ -60,3 +60,39 @@ class ContentVideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContentVideo
         fields = "__all__"
+
+from rest_framework import serializers
+from .models import PageModels
+
+
+class SubCategorySerializer(serializers.ModelSerializer):
+    """Subcategory (eng ichki daraja)"""
+    class Meta:
+        model = PageModels
+        fields = ['id', 'title', 'url']
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    """Har bir Category ichida subcategorylarni olish"""
+    subcategories = serializers.SerializerMethodField()
+
+    class Meta:
+        model = PageModels
+        fields = ['id', 'title', 'url', 'subcategories']
+
+    def get_subcategories(self, obj):
+        subcats = PageModels.objects.filter(sub=obj.id)
+        return SubCategorySerializer(subcats, many=True).data
+
+
+class PageSerializer(serializers.ModelSerializer):
+    """Page ichida categorylar va ularning subcategorylari"""
+    categories = serializers.SerializerMethodField()
+
+    class Meta:
+        model = PageModels
+        fields = ['id', 'title', 'url', 'categories']
+
+    def get_categories(self, obj):
+        cats = PageModels.objects.filter(sub=obj.id)
+        return CategorySerializer(cats, many=True).data

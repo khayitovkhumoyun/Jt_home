@@ -1,14 +1,11 @@
 from django.urls import path
 
 
-from .views import (
-    LanguageAPIView, PageModelsAPIView, ContentAPIView,
-    ContentTextAPIView, ContentFileAPIView, ContentImageAPIView, ContentVideoAPIView, LanguageDetailAPIView,
-    PageDetailAPIView, ContentDetailAPIView, ContentTextDetailAPIView
-)
+from .views import *
 
 urlpatterns = [
     path("languages/", LanguageAPIView.as_view(), name="languages"),
+    path("pageApi/<int:lan_pk>/", PageApi.as_view()),
     path("pages/", PageModelsAPIView.as_view(), name="pages"),
     path("contents/", ContentAPIView.as_view(), name="contents"),
     path("texts/", ContentTextAPIView.as_view(), name="texts"),

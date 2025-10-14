@@ -20,10 +20,9 @@ class PageModels(Base):
     icon = models.ImageField(upload_to="home/icons/", blank=True, null=True)
     title = models.CharField(max_length=255)
     lang = models.ForeignKey(Language, on_delete=models.CASCADE)
-    sub = models.IntegerField(default=None)
-    url = models.CharField(max_length=500)
-    position = models.IntegerField(default=None)
-    dic = models.TextField(default=None)
+    sub = models.IntegerField(blank=True,default=0)
+    url = models.CharField(max_length=500,unique=True,null=True,blank=True)
+    dic = models.TextField(null=True,blank=True)
 
     def __str__(self):
         return self.title
