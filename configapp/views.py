@@ -219,50 +219,89 @@ class ContentTextDetailAPIView(APIView):
         text.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-# -------- CONTENT FILE API --------
-class ContentFileAPIView(APIView):
-    def get(self, request):
-        files = ContentFile.objects.all()
-        serializer = ContentFileSerializer(files, many=True)
-        return Response(serializer.data)
-
-    @swagger_auto_schema(request_body=ContentFileSerializer)
-    def post(self, request):
-        serializer = ContentFileSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
+from .models import (
+    Content, ContentText, ContentFile, ContentImage, ContentVideo,
+    News, NewsText, NewsFile, NewsImage, NewsVideo, NewsType
+)
+from .serializers import (
+    ContentSerializer, ContentTextSerializer, ContentFileSerializer,
+    ContentImageSerializer, ContentVideoSerializer,
+    NewsSerializer, NewsTextSerializer, NewsFileSerializer,
+    NewsImageSerializer, NewsVideoSerializer, NewsTypeSerializer
+)
 
 
-# -------- CONTENT IMAGE API --------
-class ContentImageAPIView(APIView):
-    def get(self, request):
-        images = ContentImage.objects.all()
-        serializer = ContentImageSerializer(images, many=True)
-        return Response(serializer.data)
+# =====================
+#     CONTENT VIEWS
+# =====================
 
-    @swagger_auto_schema(request_body=ContentImageSerializer)
-    def post(self, request):
-        serializer = ContentImageSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class ContentViewSet(viewsets.ModelViewSet):
+    queryset = Content.objects.all().order_by('-created_ed')
+    serializer_class = ContentSerializer
+    permission_classes = [AllowAny]
 
 
-# -------- CONTENT VIDEO API --------
-class ContentVideoAPIView(APIView):
-    def get(self, request):
-        videos = ContentVideo.objects.all()
-        serializer = ContentVideoSerializer(videos, many=True)
-        return Response(serializer.data)
+class ContentTextViewSet(viewsets.ModelViewSet):
+    queryset = ContentText.objects.all().order_by('position')
+    serializer_class = ContentTextSerializer
+    permission_classes = [AllowAny]
 
-    @swagger_auto_schema(request_body=ContentVideoSerializer)
-    def post(self, request):
-        serializer = ContentVideoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ContentFileViewSet(viewsets.ModelViewSet):
+    queryset = ContentFile.objects.all().order_by('position')
+    serializer_class = ContentFileSerializer
+    permission_classes = [AllowAny]
+
+
+class ContentImageViewSet(viewsets.ModelViewSet):
+    queryset = ContentImage.objects.all().order_by('position')
+    serializer_class = ContentImageSerializer
+    permission_classes = [AllowAny]
+
+
+class ContentVideoViewSet(viewsets.ModelViewSet):
+    queryset = ContentVideo.objects.all().order_by('position')
+    serializer_class = ContentVideoSerializer
+    permission_classes = [AllowAny]
+
+
+# =====================
+#       NEWS VIEWS
+# =====================
+
+class NewsTypeViewSet(viewsets.ModelViewSet):
+    queryset = NewsType.objects.all()
+    serializer_class = NewsTypeSerializer
+    permission_classes = [AllowAny]
+
+
+class NewsViewSet(viewsets.ModelViewSet):
+    queryset = News.objects.all().order_by('-created_ed')
+    serializer_class = NewsSerializer
+    permission_classes = [AllowAny]
+
+
+class NewsTextViewSet(viewsets.ModelViewSet):
+    queryset = NewsText.objects.all().order_by('position')
+    serializer_class = NewsTextSerializer
+    permission_classes = [AllowAny]
+
+
+class NewsFileViewSet(viewsets.ModelViewSet):
+    queryset = NewsFile.objects.all().order_by('position')
+    serializer_class = NewsFileSerializer
+    permission_classes = [AllowAny]
+
+
+class NewsImageViewSet(viewsets.ModelViewSet):
+    queryset = NewsImage.objects.all().order_by('position')
+    serializer_class = NewsImageSerializer
+    permission_classes = [AllowAny]
+
+
+class NewsVideoViewSet(viewsets.ModelViewSet):
+    queryset = NewsVideo.objects.all().order_by('position')
+    serializer_class = NewsVideoSerializer
+    permission_classes = [AllowAny]

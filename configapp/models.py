@@ -32,7 +32,7 @@ class PageModels(Base):
 
 class Content(Base):
     page = models.ForeignKey(PageModels, on_delete=models.CASCADE, related_name="contents")
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255,null=True,blank=True)
 
 
     def __str__(self):
@@ -40,7 +40,7 @@ class Content(Base):
 
 
 class ContentText(Base):
-    content = models.ForeignKey(Content, on_delete=models.CASCADE, related_name="texts")
+    content = models.ForeignKey(Content, on_delete=models.CASCADE, related_name="content_texts")
     title = models.TextField()
     position = models.IntegerField()
     sub = models.BooleanField(default=False)
@@ -50,6 +50,7 @@ class ContentText(Base):
 
 
 class ContentFile(Base):
+    content = models.ForeignKey(Content, on_delete=models.CASCADE, related_name="content_files")
     title = models.CharField(max_length=255)
     file = models.FileField(default=None, upload_to='files/%Y/%m/%d')
     position = models.IntegerField()
@@ -58,6 +59,7 @@ class ContentFile(Base):
     def __str__(self):
         return self.title
 class ContentImage(Base):
+    content = models.ForeignKey(Content, on_delete=models.CASCADE, related_name="content_images")
     title = models.CharField(max_length=255)
     file = models.ImageField(default=None, upload_to='photo/%Y/%m/%d')
     position = models.IntegerField()
@@ -65,9 +67,55 @@ class ContentImage(Base):
 
 
 class ContentVideo(Base):
-    title = models.CharField(max_length=100)
-    file = models.FileField(upload_to="videos/")  # yuklangan video shu yerda saqlanadi
+    content = models.ForeignKey(Content, on_delete=models.CASCADE, related_name="content_video")
+    title = models.CharField(max_length=100,unique=True,null=True,blank=True)
+    file = models.URLField(null=True,blank=True)  # yuklangan video shu yerda saqlanadi
+    position = models.IntegerField(null=True,blank=True)
+    sub = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+
+class NewsType(Base):
+    title = models.CharField(unique=True,null=True,blank=True)
+
+class News(Base):
+    page = models.ForeignKey(PageModels, on_delete=models.CASCADE, related_name="news")
+    title = models.CharField(max_length=255, null=True, blank=True)
+    type = models.ForeignKey(NewsType,on_delete=models.CASCADE,related_name="news")
+
+class NewsText(Base):
+    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name="texts")
+    title = models.TextField()
     position = models.IntegerField()
+    sub = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.title} (pos: {self.position})"
+
+
+class NewsFile(Base):
+    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name="files")
+    title = models.CharField(max_length=255)
+    file = models.FileField(default=None, upload_to='files/%Y/%m/%d')
+    position = models.IntegerField()
+    sub = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+class NewsImage(Base):
+    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name="image")
+    title = models.CharField(max_length=255)
+    file = models.ImageField(default=None, upload_to='photo/%Y/%m/%d')
+    position = models.IntegerField()
+    sub = models.BooleanField(default=False)
+
+
+class NewsVideo(Base):
+    news = models.ForeignKey(News, on_delete=models.CASCADE, related_name="video")
+    title = models.CharField(max_length=100,unique=True,null=True,blank=True)
+    file = models.URLField(null=True,blank=True)  # yuklangan video shu yerda saqlanadi
+    position = models.IntegerField(null=True,blank=True)
     sub = models.BooleanField(default=False)
 
     def __str__(self):
