@@ -1,4 +1,5 @@
 from rest_framework.generics import get_object_or_404
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -253,12 +254,14 @@ class ContentFileViewSet(viewsets.ModelViewSet):
     queryset = ContentFile.objects.all().order_by('position')
     serializer_class = ContentFileSerializer
     permission_classes = [AllowAny]
+    parser_classes = (MultiPartParser, FormParser)
 
 
 class ContentImageViewSet(viewsets.ModelViewSet):
     queryset = ContentImage.objects.all().order_by('position')
     serializer_class = ContentImageSerializer
     permission_classes = [AllowAny]
+    parser_classes = (MultiPartParser, FormParser)
 
 
 class ContentVideoViewSet(viewsets.ModelViewSet):
@@ -293,12 +296,13 @@ class NewsFileViewSet(viewsets.ModelViewSet):
     queryset = NewsFile.objects.all().order_by('position')
     serializer_class = NewsFileSerializer
     permission_classes = [AllowAny]
-
+    parser_classes = (MultiPartParser, FormParser)
 
 class NewsImageViewSet(viewsets.ModelViewSet):
     queryset = NewsImage.objects.all().order_by('position')
     serializer_class = NewsImageSerializer
     permission_classes = [AllowAny]
+    parser_classes = (MultiPartParser, FormParser)
 
 
 class NewsVideoViewSet(viewsets.ModelViewSet):
