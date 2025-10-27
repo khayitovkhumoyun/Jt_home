@@ -26,7 +26,6 @@ router.register(r'news-files', NewsFileViewSet)
 router.register(r'news-images', NewsImageViewSet)
 router.register(r'news-videos', NewsVideoViewSet)
 
-
 urlpatterns = [
     path('', include(router.urls)),
     path("languages/", LanguageAPIView.as_view(), name="languages"),
@@ -45,4 +44,7 @@ urlpatterns = [
 
     # path("texts/", ContentTextListCreateAPIView.as_view(), name="text-list"),
     path("texts/<int:pk>/", ContentTextDetailAPIView.as_view(), name="text-detail"),
+    path('news/type/<str:type_title>/', NewsByTypeAPIView.as_view(), name='news-by-type'),
+    path('news/<str:title>/', NewsApiView.as_view(), name='news-title'),
+    path('content/<str:title>/', ContentByTitleAPIView.as_view(), name='content-by-title'),
 ]

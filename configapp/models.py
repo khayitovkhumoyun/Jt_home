@@ -32,7 +32,7 @@ class PageModels(Base):
 
 class Content(Base):
     page = models.ForeignKey(PageModels, on_delete=models.CASCADE, related_name="contents")
-    title = models.CharField(max_length=255,null=True,blank=True)
+    title = models.CharField(max_length=255,null=True,blank=True,unique=True)
 
 
     def __str__(self):
@@ -81,7 +81,7 @@ class NewsType(Base):
 
 class News(Base):
     page = models.ForeignKey(PageModels, on_delete=models.CASCADE, related_name="news")
-    title = models.CharField(max_length=255, null=True, blank=True)
+    title = models.CharField(max_length=255, null=True, blank=True,unique=True)
     type = models.ForeignKey(NewsType,on_delete=models.CASCADE,related_name="news")
 
 class NewsText(Base):

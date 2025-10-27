@@ -78,27 +78,30 @@ class PageModelsAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 """
     Page → Category → Subcategory tuzilmasini JSON formatda qaytaradi.
     """
+
+
 class PageApi(APIView):
 
-    def get(self, request,lan_pk):
+    def get(self, request, lan_pk):
         # Agar URL orqali aniq page so‘ralgan bo‘lsa
         lans = Language.objects.all()
-        serialize_lan =LanguageSerializer(lans,many=True)
+        serialize_lan = LanguageSerializer(lans, many=True)
         try:
             page = PageModels.objects.filter(lang=lan_pk).first()
             serializer = PageSerializer(page)
-            content={
-                "lans":serialize_lan.data,
-                "page":serializer.data
+            content = {
+                "lans": serialize_lan.data,
+                "page": serializer.data
             }
             return Response(content)
         except PageModels.DoesNotExist:
-            context={
-                "data":None,
-                "status":False
+            context = {
+                "data": None,
+                "status": False
             }
             return Response(data=context)
 
@@ -220,6 +223,7 @@ class ContentTextDetailAPIView(APIView):
         text.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 from .models import (
@@ -298,6 +302,7 @@ class NewsFileViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     parser_classes = (MultiPartParser, FormParser)
 
+
 class NewsImageViewSet(viewsets.ModelViewSet):
     queryset = NewsImage.objects.all().order_by('position')
     serializer_class = NewsImageSerializer
@@ -309,3 +314,38 @@ class NewsVideoViewSet(viewsets.ModelViewSet):
     queryset = NewsVideo.objects.all().order_by('position')
     serializer_class = NewsVideoSerializer
     permission_classes = [AllowAny]
+
+
+class NewsByTypeAPIView(APIView):
+    def get(self, request, type_title):
+        try:
+            news_type = NewsType.objects.get(title=type_title)
+        except NewsType.DoesNotExist:
+            return Response({"error": "Bunday kategoriya topilmadi"}, status=status.HTTP_404_NOT_FOUND)
+
+        news = News.objects.filter(type=news_type).order_by('-created_ed')
+        serializer = NewsSerializer(news, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class NewsApiView(APIView):
+    def get(self, request, title):
+        try:
+            news = News.objects.filter(type=title).order_by('-created_ed')
+            serializer = NewsSerializer(news, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except NewsType.DoesNotExist:
+            return Response({"error": "Bunday news topilmadi"})
+class ContentByTitleAPIView(APIView):
+    """
+    title orqali contentlarni olish
+    masalan: /api/content/title/<title>/
+    """
+
+    def get(self, request, title):
+        content = Content.objects.filter(title=title).first()
+        if not content:
+            return Response({"error": "Bunday title bilan content topilmadi"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = ContentSerializer(content)
+        return Response(serializer.data, status=status.HTTP_200_OK)

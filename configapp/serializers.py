@@ -143,3 +143,22 @@ class NewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = News
         fields = '__all__'
+
+class NewsApiSerializer(serializers.ModelSerializer):
+    texts = NewsTextSerializer(many=True, read_only=True)
+    files = NewsFileSerializer(many=True, read_only=True)
+    image = NewsImageSerializer(many=True, read_only=True)
+    video = NewsVideoSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = News
+        fields = ['title', 'type', 'texts', 'files', 'image', 'video']
+class ContentAPISerializer(serializers.ModelSerializer):
+    content_texts = ContentTextSerializer(many=True, read_only=True)
+    content_files = ContentFileSerializer(many=True, read_only=True)
+    content_images = ContentImageSerializer(many=True, read_only=True)
+    content_video = ContentVideoSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Content
+        fields = ['title', 'page', 'content_texts', 'content_files', 'content_images', 'content_video']
